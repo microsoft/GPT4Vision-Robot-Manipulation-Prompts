@@ -1,0 +1,201 @@
+[user]
+I will give you some examples of the input and the output you will generate. 
+Example 1:
+"""
+- Input:
+"environment": {
+    "objects": [
+        "<tray>",
+        "<cup>",
+        "<table>"
+    ],
+    "object_properties": {
+        "<tray>": ["GRBBABLE"],
+        "<cup>": ["GRBBABLE"],
+        "<table>": []
+    }
+}
+"instruction": "Grab the cup and pick it up"
+- Output:
+```python
+{task_cohesion": {
+        "task_sequence":[
+            "MoveHand(\"near the cup\")",
+            "Grab(<cup>)",
+            "PickUp(<cup>)"
+        ],
+        "step_instructions": [
+            "Move the robot hand near the cup"
+            "Grab the cup",
+            "Pick up the cup from the table"
+        ]
+    },
+    "environment_after": {
+      "objects": [
+          "<tray>",
+          "<cup>",
+          "<table>"
+      ],
+      "object_properties": {
+        "<tray>": ["GRBBABLE"],
+        "<cup>": ["GRBBABLE", "BEING_GRABBED"],
+        "<table>": []
+      }
+    },
+    "instruction_summary": "Grab the cup on the table and pick it up"
+}
+```
+"""
+
+Example 2:
+"""
+- Input:
+"environment": {
+    "objects": [
+        "<tray>",
+        "<cup>",
+        "<office_table>"
+    ],
+    "object_properties": {
+        "<tray>": ["GRBBABLE"],
+        "<cup>": ["GRBBABLE"],
+        "<office_table>": []
+    }
+}
+"instruction": "Carry the cup to my office"
+- Output:
+```python
+{task_cohesion": {
+        "task_sequence":[
+            "MoveHand(\"near the cup\")",
+            "Grab(<cup>)",
+            "PickUp(<cup>)",
+            "MoveHand(\"above the office_table\")",
+            "Put(<cup>, <office_table>)"
+        ],
+        "step_instructions": [
+            "Move the robot hand near the cup"
+            "Grab the cup",
+            "Pick up the cup from the table",
+            "Move the robot hand above the office table",
+            "Put the cup on the office table"
+        ]
+    },
+    "environment_after": {
+        "objects": [
+            "<tray>",
+            "<cup>",
+            "<office_table>"
+        ],
+        "object_properties": {
+            "<tray>": ["GRBBABLE"],
+            "<cup>": ["GRBBABLE"],
+            "<office_table>": []
+        }
+    },
+    "instruction_summary": "Grab the cup on the table"
+}
+```
+"""
+
+Example 3:
+"""
+- Input:
+"environment": {
+    "objects": [
+        "<tray>",
+        "<cup>",
+    ],
+    "object_properties": {
+        "<tray>": ["GRBBABLE", "BEING_GRABBED"],
+        "<cup>": ["GRBBABLE"],
+    }
+}
+"instruction": "Move the cup on the tray"
+- Output:
+```python
+{task_cohesion": {
+        "task_sequence":[
+            "Release(<tray>)",
+            "MoveHand(\"near the cup\")",
+            "Grab(<cup>)",
+            "PickUp(<cup>)",
+            "MoveHand(\"above the tray\")",
+            "Put(<cup>, <tray>)",
+            "Release(<cup>)"
+        ],
+        "step_instructions": [
+            "Release the tray in the hand. I need to relese the tray first because I can't grab the cup while holding the tray",
+            "Move the robot hand near the cup",
+            "Grab the cup",
+            "Pick up the cup",
+            "Move the robot hand above the tray",
+            "Put the cup on the tray",
+            "Release the cup"
+        ]
+    },
+    "environment_after": {
+        "objects": [
+            "<tray>",
+            "<cup>",
+        ],
+        "object_properties": {
+            "<tray>": ["GRBBABLE"],
+            "<cup>": ["GRBBABLE"],
+        }
+    },
+    "instruction_summary": "Move the cup on the tray"
+}
+```
+"""
+
+Example 4:
+"""
+- Input:
+"environment": {
+    "objects": [
+        "<trash_can>",
+        "<cup>",
+    ],
+    "object_properties": {
+        "<trash_can>": [],
+        "<cup>": ["GRBBABLE"],
+    }
+}
+"instruction": "Throw the cup in the trash can"
+- Output:
+```python
+{task_cohesion": {
+        "task_sequence":[
+            "MoveHand(\"near the cup\")",
+            "Grab(<cup>)",
+            "PickUp(<cup>)",
+            "MoveHand(\"above the trash can\")",
+            "Release(<cup>)"
+        ],
+        "step_instructions": [
+            "Move the robot hand near the cup",
+            "Grab the cup",
+            "Pick up the cup",
+            "Move the robot hand above the trash can",
+            "Release the cup in the trash can"
+        ]
+    },
+    "environment_after": {
+        "objects": [
+            "<trash_can>",
+            "<cup>",
+        ],
+        "object_properties": {
+            "<trash_can>": [],
+            "<cup>": ["GRBBABLE"],
+        }
+    },
+    "instruction_summary": "Throw the cup in the trash can"
+}
+```
+"""
+-------------------------------------------------------
+The texts above are part of the overall instruction. Do not start working yet:
+[assistant]
+Waiting for next input.

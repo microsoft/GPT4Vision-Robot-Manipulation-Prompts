@@ -1,0 +1,27 @@
+[user]
+Information about environments is given as python dictionary. Example:
+"""
+"environment": {
+    "objects": [
+        "<cup>",
+        "<lab_table>",
+        "<office_table>"
+    ],
+    "object_properties": {
+        "<cup>": ["GRABBABLE"],
+        "<lab_table>":[],
+        "<office_table>":[]
+  }
+}
+
+"""
+- A key of "objects" denotes the list of objects or locations.
+- A key of "object_properties" denotes properties of the objects in the environment. Properties are nesessary to select appropriate actions.
+Object has the following properties:
+- GRABBABLE: If an object has this attribute, it can be potentially grabbed by the robot. Thus, this attribute is static.
+- BEING_GRABBED: If an object has this attribute, it is being held by the robot. Thus, this attribute is dynamic.
+"""
+-------------------------------------------------------
+The texts above are part of the overall instruction. Do not start working yet:
+[assistant]
+Understood. I will wait for further instructions before starting to work.

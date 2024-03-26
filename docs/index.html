@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background-color: #f2eeee;
+      margin: 0;
+      padding: 0;
+    }
+    h1, h2, h3 {
+      text-align: center;
+    }
+    .center-content {
+      text-align: center;
+    }
+    .author-block, .link-buttons, p {
+      max-width: 800px;
+      margin: 20px auto;
+      text-align: center;
+      font-size: 20px;
+    }
+    p {
+      text-align: justify;
+      font-size: 20px;
+    }
+    figure {
+      text-align: center;
+      font-size: 20px;
+      max-width: 800px; /* 画像の最大幅に合わせる */
+      margin: auto; /* 中央揃え */
+    }
+    
+    figcaption {
+      max-width: 800px; /* キャプションの最大幅を画像の最大幅に合わせる */
+      margin: auto; /* 中央揃え */
+    }
+    .author-block a, .link-buttons a {
+      text-decoration: none;
+      color: black;
+    }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      margin: 5px;
+    }
+    .button-logo {
+      height: 30px;
+      width: auto;
+      margin-right: 10px;
+    }
+    .button-text {
+      font-size: 20px;
+    }
+    img {
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+      display: block;
+      margin: 20px auto;
+    }
+    .custom-p {
+      background-color: black; /* 背景色を黒に設定 */
+      color: white; /* 文字色を白に設定 */
+      padding: 20px; /* パディングを追加して内容を中央に寄せる（任意の値を設定） */
+    }
+  </style>
+</head>
+<body>
+  <h1>GPT-4V(ision) for Robotics: Multimodal Task Planning from Human Demonstration</h1>
+  <div class="author-block">
+    <a target="_blank" href="https://www.microsoft.com/en-us/research/people/nawake/">Naoki Wake</a>,
+    <a target="_blank" href="#">Atsushi Kanehira</a>,
+    <a target="_blank" href="#">Kazuhiro Sasabuchi</a>,
+    <a target="_blank" href="https://www.microsoft.com/en-us/research/people/takamatsujun/">Jun Takamatsu</a>,
+    <a target="_blank" href="https://www.microsoft.com/en-us/research/people/katsuike/">Katsushi Ikeuchi</a>
+    <br>
+    <a target="_blank" href="https://www.microsoft.com/en-us/research/group/applied-robotics-research/">Applied Robotics Research</a>, Microsoft, Redmond
+    <br>
+    <a style="font-size: 20px;">*For inquiries, please send an email to: <a href="mailto:naoki.wake@microsoft.com">naoki.wake@microsoft.com</a></a>
+  </div>
+  <div class="link-buttons">
+    <a href="https://arxiv.org/abs/2311.12015" class="button">
+      <img src="src/arxiv.png" alt="Arxiv" class="button-logo">
+      <span class="button-text">Arxiv Paper</span>
+    </a>
+    <a href="#gpt4vprompt" class="button">
+      <img src="src/text.png" alt="Prompt" class="button-logo">
+      <span class="button-text">GPT-4V Prompt Texts</span>
+    </a>
+    <a href="https://github.com/microsoft/GPT4Vision-Robot-Manipulation-Prompts" class="button">
+      <img src="src/github-mark.png" alt="GitHub" class="button-logo">
+      <span class="button-text">GPT-4V Sample Code</span>
+    </a>
+  </div>
+  <img src="src/top-level-schema.png" alt="Top Level Schema">
+  <h2>Abstract</h2>
+  <p>We introduce a pipeline that enhances a general-purpose Vision Language Model, GPT-4V(ision), by integrating observations of human actions to facilitate robotic manipulation. This system analyzes videos of humans performing tasks and creates executable robot programs that incorporate affordance insights. The computation starts by analyzing the videos with GPT-4V to convert environmental and action details into text, followed by a GPT-4-empowered task planner. In the following analyses, vision systems reanalyze the video with the task plan. Object names are grounded using an open-vocabulary object detector, while focus on the hand-object relation helps to detect the moment of grasping and releasing. This spatiotemporal grounding allows the vision systems to further gather affordance data (e.g., grasp type, way points, and body postures). Experiments across various scenarios demonstrate this method's efficacy in achieving real robots' operations from human demonstrations in a zero-shot manner. </p>
+  <h2>Pipeline</h2>
+  <img src="src/pipeline.png" alt="Pipeline">
+  <p>Proposed pipeline of the multimodal task planner. It consists of the symbolic task planner and the affordance
+    analyzer. Blue components/lines are text-based information, and the red components are vision-related information.
+    FoA denotes focus-of-attention.</p>
+
+  <h2 id="gpt4vprompt">GPT-4V prompt texts</h2>
+  <h3>Video Analyzer</h3>
+  <p>The below prompt is used to generate a textual instruction from a video of a human performing a task.</p>
+  <p class="custom-p">
+    These are frames from a video in which a human is doing something. Understand these frames and generate a one-sentence instruction for humans to command these actions to a robot.<br>
+    As a reference, the necessary and sufficient human actions are defined as follows:<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;HUMAN ACTION LIST<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;Grab(arg1): Take hold of arg1.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;Preconditions: Arg1 is in a reachable distance. No object is held (i.e., BEING_GRABBED)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;Postconditions: Arg1 is held (i.e., BEING_GRABBED).<br><br>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;MoveHand(arg1): Move a robot hand closer to arg1 to allow any actions to arg1. Arg 1 is a description of the hand's destination. For example, "near the table" or "above the box".<br><br>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;Release(arg1): Release arg1.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;Preconditions: Arg1 is being held (i.e., BEING_GRABBED).<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;Postconditions: Arg1 is released (i.e., not BEING_GRABBED).<br><br>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;PickUp(arg1): Lift arg1.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;Preconditions: Arg1 is being held (i.e., BEING_GRABBED).<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;Postconditions: Arg1 is being held (i.e., BEING_GRABBED).<br><br>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;Put(arg1, arg2): Place arg1 on arg2.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;Preconditions: Arg1 is being held (i.e., BEING_GRABBED).<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;Postconditions: Arg1 is being held (i.e., BEING_GRABBED).<br><br>
+    
+    Response should be a sentence in a form of human-to-human communication (i.e., do not directly use the functions). Return only one sentence without including your explanation in the response (e.g., Do not include a sentence like "here are the step-by-step instructions").
+  </p>
+  <figure>
+    <img src="src/video_analyzer.png" alt="scene analyzer">
+    <figcaption>Output of the video analyzer. Five frames are extracted at regular intervals and fed into GPT-4V.</figcaption>
+  </figure>
+  <h3>Scene Analyzer</h3>
+  <p>The below prompt is used to generate a scene description from a video of a human performing a task. The input to GPT-4V is the textual instruction, which is replaced with "[ACTION]" in the prompt, and the first frame of the video.</p>
+  <p class="custom-p">
+      This is a scene in which a human is doing "[ACTION]". Understand this scene and generate a scenery description to assist in task planning:<br>
+      Information about environments is given as python dictionary. For example:<br>
+      {<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;"objects": [<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&lt;cup&gt;",<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&lt;office_table&gt;"],<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;"object_properties": {<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&lt;cup&gt;": ["GRABBABLE"],<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&lt;office_table&gt;":[]},<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;"spatial_relations": {<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&lt;cup&gt;": ["on(&lt;office_table&gt;)"],<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&lt;office_table&gt;":[]},<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;"your_explanation": "Human is picking up the cup from the office table and placing it back on the table. I omitted the juice on the table as it is not being manipulated."<br>
+      }<br>
+      - The "objects" field denotes the list of objects. Enclose the object names with '&lt;' and '&gt;'. Connect the words without spaces, using underscores instead. Do not include human beings in the object list.<br>
+      - The "object_properties" field denotes the properties of the objects. Objects have the following properties:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;- GRABBABLE: If an object has this attribute, it can be potentially grabbed by the robot.<br>
+      - The "spatial_relations" field denotes the list of relationships between objects. Use only the following functions to describe these relations: [inside(), on()]. For example, 'on(&lt;office_table&gt;)' indicates that the object is placed on the office table. Ignore any spatial relationships not listed in this list.<br>
+      Please take note of the following.<br>
+      1. Focus only on the objects related to the human action and omit object that are not being manipulated or interacted with in this task. Explain what you included and what you omitted and why in the "your_explanation" field.<br>
+      2. The response should be a Python dictionary only, without any explanatory text (e.g., Do not include a sentence like "here is the environment").<br>
+      3. Insert "```python" at the beginning and then insert "```" at the end of your response.
+  </p>
+  <figure>
+    <img src="src/scene_analyzer.png" alt="scene analyzer">
+    <figcaption>Output of the scene analyzer.</figcaption>
+  </figure>
+  <h3>Task Planner</h3>
+  <p>We used GPT-4 for task planning. The input to GPT-4 consisted of a set of textual instructions and the scenery information generated by the scene analyzer. The base code and prompt are available at <a href="https://github.com/microsoft/ChatGPT-Robot-Manipulation-Prompts">this repository</a>.</p>
+  <figure>
+    <img src="src/task_planner.png" alt="scene analyzer">
+    <figcaption>Output of the task planner.</figcaption>
+  </figure>
+
+  <h2>Experiments</h2>
+  <h3>Video Grounding</h3>
+  <p>After the system comprehends the task sequence, it synchronizes this sequence with the human demonstration by re-analyzing the input video.</p>
+  <figure>
+    <img src="src/drawer.gif" alt="gif">
+    <figcaption>Intermediate result of the pipeline: a recognized task sequence spatio-temporally grounded in the input video of opening a drawer.</figcaption>
+  </figure>
+  <figure>
+    <img src="src/shelf.gif" alt="gif">
+    <figcaption>Intermediate result of the pipeline: a recognized task sequence spatio-temporally grounded in the input video of relocating a juice between the shelves.</figcaption>
+  </figure>
+  <h3>Robot Execution</h3>
+  <p>Examples of robot execution are presented in sped-up videos. The trajectory of the robot's hand is defined relative to the object's position at the moment of grasping. Consequently, the object's position is reverified during execution, and the trajectory is recalculated based on these coordinates. Arm postures are computed using inverse kinematics, and human poses from the demonstration can also be utilized for multi-degree-of-freedom arms. Several skills, such as the grasp skill, are trained using reinforcement learning.</p>
+  <figure>
+    <img src="src/robot_drawer.gif" alt="gif">
+  </figure>
+  <figure>
+    <img src="src/robot_shelf.gif" alt="gif">
+  </figure>
+</body>
+</html>

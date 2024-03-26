@@ -1,0 +1,44 @@
+{
+    "task_cohesion": {
+        "task_sequence": [
+            "MoveHand(\"near the can\")",
+            "Grab(<can>)",
+            "PickUp(<can>)",
+            "MoveHand(\"above the tray\")",
+            "Put(<can>, <tray>)",
+            "Release(<can>)"
+        ],
+        "step_instructions": [
+            "Move the robot hand near the can to prepare for grabbing it",
+            "Grab the can to hold it",
+            "Pick up the can from the table",
+            "Move the robot hand above the tray to prepare for placing the can",
+            "Put the can on the tray",
+            "Release the can to complete the action"
+        ]
+    },
+    "environment_after": {
+        "objects": [
+            "<can>",
+            "<tray>",
+            "<table>"
+        ],
+        "object_properties": {
+            "<can>": [
+                "GRABBABLE"
+            ],
+            "<tray>": [],
+            "<table>": []
+        },
+        "spatial_relations": {
+            "<can>": [
+                "on(<tray>)"
+            ],
+            "<tray>": [
+                "on(<table>)"
+            ],
+            "<table>": []
+        }
+    },
+    "instruction_summary": "Move hand to the can, grab it, then put it on the tray"
+}

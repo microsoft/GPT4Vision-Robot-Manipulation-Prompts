@@ -1,14 +1,40 @@
-# Project
+# GPT4Vision-Robot-Manipulation-Prompts
+This repository provides the sample code designed to interpret human demonstration videos and convert them into high-level tasks for robots. Our [Applied Robotics Research Group](https://www.microsoft.com/en-us/research/group/applied-robotics-research/) believes that this mechanism will serve as an effective interface for humans to instruct humanoid and industrial robots.
+The prompts are designed for easy customization and seamless integration with existing robot control and visual recognition systems.
+For more information, please visit our [project page](https://microsoft.github.io/GPT4Vision-Robot-Manipulation-Prompts/) and our paper, [GPT-4V(ision) for Robotics: Multimodal Task Planning from Human Demonstration](https://arxiv.org/abs/2311.12015).
+Please note that this repository only contains the sample code for task recognition using GPT-4V. It does not include mechanisms for [incorporating user feedback](https://github.com/microsoft/ChatGPT-Robot-Manipulation-Prompts) or [classical vision systems](https://github.com/microsoft/analyzer-for-robot-teaching-demonstrations) to recognize affordances from videos. For those components, please explore other repositories we have provided.
+### Overview of the pipeline:
+![LfO pipeline](./src/pipeline.jpg)
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+## How to use
+We have confirmed that the sample codes work with python 3.9.12 and 3.12.2
+### If you use Azure OpenAI, set these environmental variables
+- AZURE_OPENAI_DEPLOYMENT_NAME
+- AZURE_OPENAI_ENDPOINT
+- AZURE_OPENAI_API_KEY
+### If you use OpenAI, set this environmental variable
+- OPENAI_API_KEY
 
-As the maintainer of this project, please make a few updates:
+### Install dependencies
+```bash
+> pip install -r requirements.txt
+```
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+### Run the sample code
+```bash
+python example.py sample_video/sample.mp4 --use_azure
+```
+We assume that the video path refers to a mp4 file of human demonstrating something. Add the --use_azure option if you use Azure OpenAI instead onf OpenAI
+
+## Bibliography
+```
+@article{wake2023gpt,
+  title={GPT-4V (ision) for robotics: Multimodal task planning from human demonstration},
+  author={Wake, Naoki and Kanehira, Atsushi and Sasabuchi, Kazuhiro and Takamatsu, Jun and Ikeuchi, Katsushi},
+  journal={arXiv preprint arXiv:2311.12015},
+  year={2023}
+}
+```
 
 ## Contributing
 

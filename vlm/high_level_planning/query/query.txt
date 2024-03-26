@@ -1,0 +1,24 @@
+Start working. Resume from the environment below.
+"""
+{"environment":[ENVIRONMENT]}
+"""
+The instruction is as follows:
+"""
+{"instruction": [INSTRUCTION]}
+"""
+The dictionary that you return must be formatted as a Python dictionary. Follow these rules:
+1. Make sure that each element of the ["step_instructions"] explains corresponding element of the ["task_sequence"]. 
+2. DO NOT USE undefined verbs. USE ONLY verbs in "ROBOT ACTION LIST".
+3. The arguments of the ROBOT ACTIONs must be selected from the objects in the environment.
+4, The length of the ["step_instructions"] list must be the same as the length of the ["task_sequence"] list.
+5. You must output a valid Python dictionary. Never leave ',' at the end of the list.
+6. Keep track of all items listed in the "environment" field. Please ensure that you fill out both the "objects" and "object_states" sections for all listed items. 
+7. All keys of the dictionary must be double-quoted.
+8. Insert "```python" at the beginning and the insert "```" at end of the dictionary to separate it from the rest of your response. That is, your response must be formatted as follows:
+```python
+{... your response, which must be a valid Python dictionary...}
+```
+9. Ensure that Preconditions and Postconditions are satisfied for each step. 
+10. Make sure that nothing is being grabbed in the hands in the end of the operation.
+"""
+Adhere to the output format I defined above. Note that the input text is not case sensitive. Follow the nine rules. Think step by step.

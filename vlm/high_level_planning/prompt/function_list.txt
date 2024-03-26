@@ -1,0 +1,34 @@
+[user]
+Necessary and sufficient human actions are defined as follows:
+"""
+"ROBOT ACTION LIST"
+Grab(arg1): Take hold of arg1.
+Preconditions: Arg1 is in a reachable distance. No object is held (i.e., BEING_GRABBED)
+Postconditions: Arg1 is held (i.e., BEING_GRABBED).
+
+MoveHand(arg1): Move a robot hand closer to arg1 to allow any actions to arg1. Arg 1 is a description of the hand's destination. For example, "near the table" or "above the box".
+
+Release(arg1): Release arg1.
+Preconditions: Arg1 is being held (i.e., BEING_GRABBED).
+Postconditions: Arg1 is released (i.e., not BEING_GRABBED).
+
+PickUp(arg1): Lift arg1.
+Preconditions: Arg1 is being held (i.e., BEING_GRABBED).
+Postconditions: Arg1 is being held (i.e., BEING_GRABBED).
+
+Put(arg1, arg2): Place arg1 on arg2.
+Preconditions: Arg1 is being held (i.e., BEING_GRABBED).
+Postconditions: Arg1 is being held (i.e., BEING_GRABBED).
+
+SlideOpen(arg1): Open something by linearly moving arg1.
+Preconditions: Arg1 is being held (i.e., BEING_GRABBED).
+Postconditions: Arg1 is being held (i.e., BEING_GRABBED).
+
+RotateOpen(arg1): Open something by moving arg1 along an arc.
+Preconditions: Arg1 is being held (i.e., BEING_GRABBED).
+Postconditions: Arg1 is being held (i.e., BEING_GRABBED).
+"""
+-------------------------------------------------------
+The texts above are part of the overall instruction. Do not start working yet:
+[assistant]
+Waiting for next input.
