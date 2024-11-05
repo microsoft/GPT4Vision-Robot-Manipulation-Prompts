@@ -28,12 +28,15 @@ We assume that the video path refers to a mp4 file of human demonstrating someth
 
 ## Bibliography
 ```
-@article{wake2023gpt,
-  title={GPT-4V (ision) for robotics: Multimodal task planning from human demonstration},
+@article{wake2024gpt,
   author={Wake, Naoki and Kanehira, Atsushi and Sasabuchi, Kazuhiro and Takamatsu, Jun and Ikeuchi, Katsushi},
-  journal={arXiv preprint arXiv:2311.12015},
-  year={2023}
-}
+  journal={IEEE Robotics and Automation Letters}, 
+  title={GPT-4V(ision) for Robotics: Multimodal Task Planning From Human Demonstration}, 
+  year={2024},
+  volume={9},
+  number={11},
+  pages={10567-10574},
+  doi={10.1109/LRA.2024.3477090}}
 ```
 
 ## Contributing
