@@ -35,7 +35,7 @@ We assume that the video path refers to a mp4 file of human demonstrating someth
   year={2024},
   volume={9},
   number={11},
-  pages={10567-10574},
+  pages={10567--10574},
   doi={10.1109/LRA.2024.3477090}}
 ```
 
